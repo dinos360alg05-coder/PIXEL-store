@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111f"><meta name="description" content="Pixel Store — gear up for your next level.">
+  <meta property="og:title" content="Pixel Store | Gear up for your next level"><meta property="og:description" content="PC gear, games, phones and ready-to-play builds.">
+  <title>Pixel Store — Gear up for your next level</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Reem+Kufi:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="theme.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js" defer></script>
+  <script src="config.js" defer></script><script src="seed-data.js" defer></script><script src="sfx.js" defer></script><script src="scene.js" defer></script><script src="app.js" defer></script>
+</head>
+<body>
+  <div class="crt" aria-hidden="true"></div><canvas id="scene" aria-hidden="true"></canvas>
+  <div class="xp" aria-label="Page progress"><span id="xpFill"></span><b>LV. 01</b></div>
+  <header class="topbar"><a class="brand glitch" href="#/" data-text="PIXEL STORE">PIXEL STORE</a>
+    <nav class="main-nav" aria-label="Main"><a href="#/">HOME</a><a href="#/category/pc-accessories" data-i18n="nav.gear">GEAR</a><a href="#/category/games" data-i18n="nav.games">GAMES</a><a href="#/category/phones">PHONES</a><a href="#/configs">PC BUILDS</a></nav>
+    <div class="head-actions"><button class="icon-btn" id="langBtn" aria-label="Change language">عربي</button><button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙</button><button class="inventory" id="cartBtn">INVENTORY <span id="cartCount">0</span></button></div>
+  </header>
+  <div class="ticker" aria-hidden="true"><div><span>★ PC GEAR</span><span>✦ GAMES &amp; STEAM ACCOUNTS</span><span>▰ PHONES</span><span>◈ CUSTOM BUILDS</span><span>☏ ORDER VIA TELEGRAM</span><span>★ PC GEAR</span><span>✦ GAMES &amp; STEAM ACCOUNTS</span><span>▰ PHONES</span><span>◈ CUSTOM BUILDS</span><span>☏ ORDER VIA TELEGRAM</span></div></div>
+  <main id="app" tabindex="-1"><div class="loading"><span>LOADING PIXELS</span><i></i></div></main>
+  <footer class="footer"><b class="brand">PIXEL STORE</b><nav><a href="#/category/pc-accessories">GEAR</a><a href="#/category/games">GAMES</a><a href="#/category/phones">PHONES</a><a href="#/configs">PC BUILDS</a><a id="ftTg" target="_blank" rel="noopener">TELEGRAM</a></nav><span>© 2026 · PRESS START · PLAY FAIR · SHOP SMART</span></footer>
+  <nav class="mobile-nav" aria-label="Mobile navigation"><a href="#/">⌂<small>HOME</small></a><a href="#/category/pc-accessories">▦<small>GEAR</small></a><a href="#/wishlist">♡<small>SAVED</small></a><button id="mobileCart">▣<small>BAG <span id="mobileCount">0</span></small></button></nav>
+  <dialog id="cartDrawer" class="cart-drawer"><div class="panel-head"><b>INVENTORY // QUICK VIEW</b><button class="close" id="closeCart" aria-label="Close inventory">×</button></div><div id="drawerItems"></div><p id="drawerTotal" class="price"></p><a class="btn primary" href="#/cart" id="fullCartLink">OPEN FULL INVENTORY →</a></dialog>
+  <aside id="settingsPanel" class="settings" hidden><div class="panel-head"><b>SETTINGS</b><button class="close" data-close="settingsPanel" aria-label="Close">×</button></div>
+    <label><input type="checkbox" id="soundToggle"> 8-bit sound</label><label><input type="checkbox" id="scanToggle" checked> Scanlines</label><label><input type="checkbox" id="motionToggle"> Glitch & motion</label><label><input type="checkbox" id="readableToggle"> Readable font</label></aside>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div><a class="telegram" id="communityFloat" target="_blank" rel="noopener noreferrer" aria-label="Contact us on Telegram" title="Contact us on Telegram"><svg class="telegram-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 4.35a1.5 1.5 0 0 0-1.58-.22L2.5 11.54a1.5 1.5 0 0 0 .17 2.82l4.13 1.36 1.54 4.67a1.5 1.5 0 0 0 2.65.43l2.33-3.04 4.08 3.01a1.5 1.5 0 0 0 2.36-.9l2.2-13.98a1.5 1.5 0 0 0-.26-1.56ZM9.08 15.05l8.04-7.35-6.58 8.88-.33 2.4-1.13-3.43Zm1.9 3.92.28-2.06 1.38 1.02-1.66 1.04Zm7.3 1.1-6.35-4.7 7.1-9.57-1.75 14.27Z"/></svg><span class="telegram-label">CONTACT</span></a>
+</body></html>
