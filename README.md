@@ -38,3 +38,7 @@ Deploy this folder as a static site to Netlify, GitHub Pages, Vercel, or Cloudfl
 - `admin.html`: Supabase Auth login, product create/edit/delete, stock/active/featured controls, image URL list, JSON/CSV import/export, and category creation.
 
 The admin supports product image URLs and ordering by editing the URL list; direct file uploads and the richer friendly variants/spec editor can be added against the provided storage bucket. Supabase must be configured before admin changes can be used. Seed catalog prices are examples, not live quotes.
+
+## Admin analytics setup
+
+The redesigned admin dashboard groups products by their category and provides live inventory and sales summaries. To track actual sold units, run `admin-analytics.sql` once in the Supabase SQL Editor. Sales are recorded from the admin products table using **Record sale**; this safely increments `units_sold` and decrements stock in one database function. Historical sales are not inferred, so the counter starts at zero unless an admin adjusts it through a controlled database migration. The dashboard refreshes every 30 seconds and subscribes to Supabase product/category changes.

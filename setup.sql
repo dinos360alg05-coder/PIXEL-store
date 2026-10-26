@@ -60,3 +60,19 @@ insert into public.pc_configs(tier,name,components,use_case,price,options,is_act
 ('HIGH','Arcade Elite','{"CPU":"Ryzen 7 7800X3D","GPU":"RTX 4070 Super 12GB","RAM":"32GB DDR5 6000","Storage":"2TB NVMe Gen4","PSU":"850W Gold","Case":"Panorama ATX","Cooling":"360mm liquid cooler"}','High refresh 1440p / entry 4K',1580000,'{"RAM":[{"label":"64GB DDR5","price":62000}],"Storage":[{"label":"4TB NVMe","price":118000}],"GPU":[{"label":"RTX 4080 Super","price":510000}]}',true),
 ('ULTRA','Final Boss','{"CPU":"Ryzen 9 9950X","GPU":"RTX 4090 24GB","RAM":"64GB DDR5 6000","Storage":"4TB NVMe Gen5","PSU":"1200W Platinum","Case":"Full Tower Glass","Cooling":"420mm liquid cooler"}','4K ultra and creator workloads',2850000,'{"RAM":[{"label":"96GB DDR5","price":110000}],"Storage":[{"label":"8TB NVMe","price":230000}],"GPU":[{"label":"RTX 5090 32GB","price":880000}]}',true)
 on conflict(tier,name) do update set components=excluded.components,use_case=excluded.use_case,price=excluded.price,options=excluded.options,is_active=true;
+
+-- Sales analytics. Keep this in sync with admin-analytics.sql.
+alter table public.products add column if not exists units_sold integer not null default 0 check (units_sold >= 0);
+create or replace function public.record_product_sale(p_product_id uuid, p_quantity integer)
+returns void language plpgsql security definer set search_path=public as $$
+begin
+ if not public.is_store_admin() then raise exception 'Only a store admin can record a sale.' using errcode='42501'; end if;
+ if p_quantity is null or p_quantity<1 then raise exception 'Sale quantity must be a positive integer.' using errcode='22023'; end if;
+ update public.products set stock=stock-p_quantity,units_sold=units_sold+p_quantity where id=p_product_id and stock>=p_quantity;
+ if not found then
+  if exists(select 1 from public.products where id=p_product_id) then raise exception 'Not enough stock for this sale.' using errcode='22023'; end if;
+  raise exception 'Product not found.' using errcode='P0002';
+ end if;
+end; $$;
+revoke all on function public.record_product_sale(uuid,integer) from public,anon;
+grant execute on function public.record_product_sale(uuid,integer) to authenticated;
